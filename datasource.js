@@ -14,10 +14,11 @@ define( [
 			}
 
 			WMFPageViewsDatasource.prototype.query = function( queryOptions ) {
-				var from = new Date( options.range.from.valueOf() );
-				var to = new Date( options.range.to.valueOf() );
-				//TODO get target from somewhere
-				var target = "User%3AAddshore";
+				var from = new Date( queryOptions.range.from.valueOf() );
+				var to = new Date( queryOptions.range.to.valueOf() );
+
+				// TODO allow using multiple targets
+				var target = queryOptions.targets[ 0 ];
 
 				var fromString = from.getFullYear()
 					+ ('0' + (from.getMonth()+1)).slice(-2)
@@ -28,7 +29,7 @@ define( [
 
 				var reqOpts = {};
 				reqOpts.method = 'GET';
-				reqOpts.url = 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/wikidata.org/all-access/all-agents/' + target + '/daily/' + fromString + '/' + toString;
+				reqOpts.url = 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/' + target.project + '/all-access/all-agents/' + target.page + '/daily/' + fromString + '/' + toString;
 				reqOpts.inspect = { type: 'wmpageviews' };
 
 				return backendSrv.datasourceRequest( reqOpts ).then( function( result ) {
@@ -46,7 +47,7 @@ define( [
 						datapoints[ i ] = [ item.views, ms ]
 					}
 
-					return { data: [ { datapoints: datapoints, target: "User:Addshore" } ] };
+					return { data: [ { datapoints: datapoints, target: target.page + '@' + target.project } ] };
 				} );
 			};
 
