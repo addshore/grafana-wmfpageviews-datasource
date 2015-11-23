@@ -1,83 +1,67 @@
-<div class="editor-row">
+<div class="tight-form">
+	<ul class="tight-form-list pull-right">
+		<li ng-show="parserError" class="tight-form-item">
+			<a bs-tooltip="parserError" style="color: rgb(229, 189, 28)" role="menuitem">
+				<i class="fa fa-warning"></i>
+			</a>
+		</li>
 
-	<div  ng-repeat="target in panel.targets"
-		  class="grafana-target"
-		  ng-class="{'grafana-target-hidden': target.hide}"
-		  ng-controller="AtlasTargetCtrl"
-		  ng-init="init()">
+		<li class="tight-form-item small" ng-show="target.datasource">
+			<em>{{target.datasource}}</em>
+		</li>
 
-		<div class="grafana-target-inner-wrapper">
-			<div class="grafana-target-inner">
-				<ul class="grafana-target-controls">
-					<li class="dropdown">
-						<a class="pointer dropdown-toggle"
-						   data-toggle="dropdown"
-						   tabindex="1">
-							<i class="icon icon-cog"></i>
-						</a>
-						<ul class="dropdown-menu pull-right" role="menu">
-							<li role="menuitem"><a tabindex="1" ng-click="duplicate()">Duplicate</a></li>
-							<li role="menuitem"><a tabindex="1" ng-click="moveMetricQuery($index, $index-1)">Move up </a></li>
-							<li role="menuitem"><a tabindex="1" ng-click="moveMetricQuery($index, $index+1)">Move down</a></li>
-						</ul>
+		<li class="tight-form-item">
+			<div class="dropdown">
+				<a class="pointer dropdown-toggle" data-toggle="dropdown" tabindex="1">
+					<i class="fa fa-bars"></i>
+				</a>
+				<ul class="dropdown-menu pull-right" role="menu">
+					<li role="menuitem">
+						<a tabindex="1" ng-click="duplicateDataQuery(target)">Duplicate</a>
 					</li>
-					<li>
-						<a class="pointer" tabindex="1" ng-click="removeDataQuery(target)">
-							<i class="icon icon-remove"></i>
-						</a>
+					<li role="menuitem">
+						<a tabindex="1" ng-click="moveDataQuery($index, $index-1)">Move up</a>
 					</li>
-				</ul>
-
-				<ul class="grafana-segment-list">
-					<li>
-						<a class="grafana-target-segment" ng-click="target.hide = !target.hide; get_data();" role="menuitem">
-							<i class="icon-eye-open"></i>
-						</a>
+					<li role="menuitem">
+						<a tabindex="1" ng-click="moveDataQuery($index, $index+1)">Move down</a>
 					</li>
 				</ul>
-
-				<ul class="grafana-segment-list">
-					<li>
-                        <textarea type="text"
-								  class="grafana-target-text-input span10"
-								  ng-model="target.query"
-								  placeholder="name,ssCpuUser,:eq,:sum"
-								  spellcheck='false'
-								  data-min-length=0 data-items=100
-								  ng-model-options="{ debounce: 1000 }"
-								  ng-change="get_data()"
-								  style="font-family: monospace; display: block;">
-                        </textarea>
-					</li>
-				</ul>
-
-				<div class="clearfix"></div>
 			</div>
-		</div>
-	</div>
-</div>
+		</li>
 
-<section class="grafana-metric-options">
-	<div class="grafana-target">
-		<div class="grafana-target-inner">
-			<ul class="grafana-segment-list">
-				<li class="grafana-target-segment grafana-target-segment-icon">
-					<i class="icon-info-sign"></i>
-				</li>
-				<li class="grafana-target-segment">
-					<a href="https://github.com/Netflix/atlas/wiki/Examples" target="_blank"
-					   bs-tooltip="'Click to show Atlas Stack Language examples'" data-placement="bottom">
-						ASL examples
-					</a>
-				</li>
-				<li class="grafana-target-segment">
-					<a href="https://github.com/Netflix/atlas/wiki/Stack-Language-Reference" target="_blank"
-					   bs-tooltip="'Click to show Atlas Stack Language reference'" data-placement="bottom">
-						ASL reference
-					</a>
-				</li>
-			</ul>
-			<div class="clearfix"></div>
-		</div>
-	</div>
-</section>
+		<li class="tight-form-item last">
+			<a class="pointer" tabindex="1" ng-click="removeDataQuery(target)">
+				<i class="fa fa-remove"></i>
+			</a>
+		</li>
+	</ul>
+
+	<ul class="tight-form-list">
+		<li class="tight-form-item" style="min-width: 15px; text-align: center">
+			{{target.refId}}
+		</li>
+		<li>
+			<a class="tight-form-item" ng-click="target.hide = !target.hide; get_data();" role="menuitem">
+				<i class="fa fa-eye"></i>
+			</a>
+		</li>
+	</ul>
+
+	<ul class="tight-form-list">
+		<li class="tight-form-item" style="min-width: 15px; text-align: center">
+			Project name:
+		</li>
+		<li class="tight-form-item">
+			<input type="text" class="tight-form-input input-xlarge" ng-model="target.project" placeholder="wikidata.org"/>
+		</li>
+		<li class="tight-form-item" style="min-width: 15px; text-align: center">
+			Page title:
+		</li>
+		<li class="tight-form-item">
+			<input type="text" class="tight-form-input input-xlarge" ng-model="target.page" placeholder="User:Addshore"/>
+		</li>
+	</ul>
+
+	<div class="clearfix"></div>
+
+</div>
