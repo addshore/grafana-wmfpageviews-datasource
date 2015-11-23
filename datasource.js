@@ -32,7 +32,12 @@ define( [
 					requests.push( backendSrv.datasourceRequest( {
 						method: 'GET',
 						inspect: { type: 'wmpageviews' },
-						url: 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/' + target.project + '/all-access/all-agents/' + target.page + '/daily/' + fromString + '/' + toString
+						url: 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/' +
+						target.project + '/' +
+						target.accesstype + '/' +
+						target.agenttype + '/' +
+						target.page +
+						'/daily/' + fromString + '/' + toString
 					} ) );
 
 				}
@@ -55,7 +60,14 @@ define( [
 							}
 						}
 
-						returnData.push( { datapoints: datapoints, target: targets[index].page + '@' + targets[index].project } )
+						var metricName =
+								targets[index].project.replace( '.', '_' ) + '.' +
+								targets[index].page.replace( '.', '_' ) + '.' +
+								targets[index].accesstype.replace( '.', '_' ) + '.' +
+								targets[index].agenttype.replace( '.', '_' )
+							;
+
+						returnData.push( { datapoints: datapoints, target: metricName } )
 					} );
 
 					return { data: returnData };
