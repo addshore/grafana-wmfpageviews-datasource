@@ -1,0 +1,10 @@
+{
+  "pluginType": "datasource",
+  "name": "WMF Pageviews",
+
+  "type": "wmfpageviews",
+  "serviceName": "WMFPageviewsDatasource",
+
+  "module": "app/plugins/datasource/wmfpageviews/datasource",
+  "metrics": true
+}
