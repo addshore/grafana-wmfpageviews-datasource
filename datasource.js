@@ -13,18 +13,16 @@ define( [
 			function WMFPageViewsDatasource( datasource ) {
 			}
 
+			WMFPageViewsDatasource.prototype._toRestBaseString = function (value) {
+				var date = new Date( value );
+				return date.getFullYear()
+					+ ('0' + (date.getMonth()+1)).slice(-2)
+					+ ('0' + date.getDate()).slice(-2);
+			};
+
 			WMFPageViewsDatasource.prototype.query = function( queryOptions ) {
-				var from = new Date( queryOptions.range.from.valueOf() );
-				var to = new Date( queryOptions.range.to.valueOf() );
-
-				var fromString = from.getFullYear()
-					+ ('0' + (from.getMonth()+1)).slice(-2)
-					+ ('0' + from.getDate()).slice(-2);
-				var toString = to.getFullYear()
-					+ ('0' + (to.getMonth()+1)).slice(-2)
-					+ ('0' + to.getDate()).slice(-2);
-
 				var targets = queryOptions.targets;
+				var self = this;
 
 				var requests = [];
 				for (var i = 0; i < targets.length; i++) {
@@ -37,7 +35,8 @@ define( [
 						target.accesstype + '/' +
 						target.agenttype + '/' +
 						target.page +
-						'/daily/' + fromString + '/' + toString
+						'/daily/' + self._toRestBaseString( queryOptions.range.from.valueOf() ) +
+						'/' + self._toRestBaseString( queryOptions.range.to.valueOf() )
 					} ) );
 
 				}
