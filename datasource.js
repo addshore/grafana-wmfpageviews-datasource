@@ -25,19 +25,32 @@ define( [
 				var self = this;
 
 				var requests = [];
+				var requestIndex = [];
 				for (var i = 0; i < targets.length; i++) {
 					var target = targets[i];
-					requests.push( backendSrv.datasourceRequest( {
-						method: 'GET',
-						inspect: { type: 'wmpageviews' },
-						url: 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/' +
-						target.project + '/' +
-						target.accesstype + '/' +
-						target.agenttype + '/' +
-						target.page +
-						'/daily/' + self._toRestBaseString( queryOptions.range.from.valueOf() ) +
-						'/' + self._toRestBaseString( queryOptions.range.to.valueOf() )
-					} ) );
+
+					var projects = target.project.split( '|' );
+					var pages = target.page.split( '|' );
+
+					for (var j = 0; j < projects.length; j++) {
+						for (var k = 0; k < pages.length; k++) {
+
+							requests.push( backendSrv.datasourceRequest( {
+								method: 'GET',
+								inspect: { type: 'wmpageviews' },
+								url: 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/' +
+								projects[j] + '/' +
+								target.accesstype + '/' +
+								target.agenttype + '/' +
+								pages[k] +
+								'/daily/' + self._toRestBaseString( queryOptions.range.from.valueOf() ) +
+								'/' + self._toRestBaseString( queryOptions.range.to.valueOf() )
+							} ) );
+
+							requestIndex.push( { project: projects[j], page: pages[k], accesstype: target.accesstype, agenttype: target.agenttype } );
+
+						}
+					}
 
 				}
 
@@ -60,10 +73,10 @@ define( [
 						}
 
 						var metricName =
-								targets[index].project.replace( '.', '_' ) + '.' +
-								targets[index].page.replace( '.', '_' ) + '.' +
-								targets[index].accesstype.replace( '.', '_' ) + '.' +
-								targets[index].agenttype.replace( '.', '_' )
+								requestIndex[index].project.replace( '.', '_' ) + '.' +
+								requestIndex[index].page.replace( '.', '_' ) + '.' +
+								requestIndex[index].accesstype.replace( '.', '_' ) + '.' +
+								requestIndex[index].agenttype.replace( '.', '_' )
 							;
 
 						returnData.push( { datapoints: datapoints, target: metricName } )
