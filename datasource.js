@@ -153,8 +153,8 @@ define( [
 										groupedRequests[ metricName ] = [];
 									}
 
-									if( !groupedRequests[metricName].hasOwnProperty( url ) ) {
-										groupedRequests[ metricName ][url] = request;
+									if( !groupedRequests[ metricName ].hasOwnProperty( url ) ) {
+										groupedRequests[ metricName ][ url ] = request;
 									}
 								}
 							}
@@ -188,23 +188,21 @@ define( [
 
 							var dataPoints = [];
 							//Wait for all request promises to complete and then do stuff
-							$q.all(requests).then(function(data){
+							$q.all( requests ).then( function( data ) {
 
 								for( var j = 0; j < data.length; j++ ) {
-									var element = data[j];
-									if( element && element.data ) {
-										for( var i = 0; i < element.data.items.length; i++ ) {
-											var item = element.data.items[ i ];
+									var element = data[ j ];
+									for( var i = 0; i < element.data.items.length; i++ ) {
+										var item = element.data.items[ i ];
 
-											var views = item.views;
-											var ms = item.timestamp.substring( 0, item.timestamp.length - 2 );
-											ms = new Date( ms.substr( 0, 4 ) + ' ' + ms.substr( 4, 2 ) + ' ' + ms.substr( 6, 2 ) ).getTime();
+										var views = item.views;
+										var ms = item.timestamp.substring( 0, item.timestamp.length - 2 );
+										ms = new Date( ms.substr( 0, 4 ) + ' ' + ms.substr( 4, 2 ) + ' ' + ms.substr( 6, 2 ) ).getTime();
 
-											if( ms in dataPoints ) {
-												dataPoints[ ms ][ 0 ] = dataPoints[ ms ][ 0 ] + views;
-											} else {
-												dataPoints[ ms ] = [ views, ms ];
-											}
+										if( ms in dataPoints ) {
+											dataPoints[ ms ][ 0 ] = dataPoints[ ms ][ 0 ] + views;
+										} else {
+											dataPoints[ ms ] = [ views, ms ];
 										}
 									}
 								}
@@ -214,17 +212,19 @@ define( [
 									finalDataPoints.push( dataPoints[ o ] );
 								}
 
-								finalDataPoints.sort( function(a,b){ return a[1] - b[1] } );
+								finalDataPoints.sort( function( a, b ) {
+									return a[ 1 ] - b[ 1 ]
+								} );
 
 								resolve( { datapoints: finalDataPoints, target: metricName } );
-							});
+							} );
 
 						} ) );
 
 					}
 				}
 
-				return $q.all(metricPromises).then(function(data){
+				return $q.all( metricPromises ).then( function( data ) {
 					return { data: data };
 				} );
 
