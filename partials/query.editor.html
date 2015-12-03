@@ -1,4 +1,6 @@
 <div class="tight-form">
+
+	<!-- Right options (menu and delete) -->
 	<ul class="tight-form-list pull-right">
 		<li ng-show="parserError" class="tight-form-item">
 			<a bs-tooltip="parserError" style="color: rgb(229, 189, 28)" role="menuitem">
@@ -36,6 +38,7 @@
 		</li>
 	</ul>
 
+	<!-- Left options (refid and show/hide) -->
 	<ul class="tight-form-list">
 		<li class="tight-form-item" style="min-width: 15px; text-align: center">
 			{{target.refId}}
@@ -47,43 +50,75 @@
 		</li>
 	</ul>
 
-	<ul class="tight-form-list">
-		<li class="tight-form-item" style="min-width: 15px; text-align: center">
-			Project name:
+	<!-- Actual options -->
+	<ul class="tight-form-list" style="padding-left:65px" >
+		<li>Projects:</li>
+		<li class="tight-form-item last">
+			<input type="text" class="tight-form-input input-xlarge" ng-model="target.project" placeholder="wikidata.org|meta.wikimedia.org"/>
 		</li>
-		<li class="tight-form-item">
-			<input type="text" class="tight-form-input input-xlarge" ng-model="target.project" placeholder="wikidata.org"/>
-		</li>
-		<li class="tight-form-item" style="min-width: 15px; text-align: center">
-			Page title:
-		</li>
-		<li class="tight-form-item">
-			<input type="text" class="tight-form-input input-xlarge" ng-model="target.page" placeholder="User:Addshore"/>
+		<li class="tight-form-item last">
+			Grouped:
+			<input ng-model="projects.mobileapp" type="checkbox" name="projects-grouped" id="projects-grouped" value="projects-grouped"/>
 		</li>
 
-		<div class="clearfix"></div>
+	</ul>
 
-		<li class="tight-form-item" style="min-width: 15px; text-align: center">
-			Access type:
+	<div class="clearfix"></div>
+
+	<ul class="tight-form-list" style="padding-left:65px" >
+
+		<li>Pages:</li>
+		<li class="tight-form-item last">
+			<input type="text" class="tight-form-input input-xlarge" ng-model="target.page" placeholder="User:Addshore|User_talk:Addshore"/>
 		</li>
-		<li class="tight-form-item">
-			<select class="tight-form-input input-large" ng-model="target.accesstype">
-				<option value="all-access">all-access</option>
-				<option value="desktop">desktop</option>
-				<option value="mobile-app">mobile-app</option>
-				<option value="mobile-web">mobile-web</option>
-			</select>
+		<li class="tight-form-item last">
+			Grouped:
+			<input ng-model="pages.mobileapp" type="checkbox" name="pages-grouped" id="pages-grouped" value="pages-grouped"/>
 		</li>
-		<li class="tight-form-item" style="min-width: 15px; text-align: center">
-			Agent type:
+
+	</ul>
+
+	<div class="clearfix"></div>
+
+	<ul class="tight-form-list" style="padding-left:65px" >
+		<li>Access type:</li>
+		<li class="tight-form-item last">
+			Desktop:
+			<input ng-model="access.desktop" type="checkbox" name="access-desktop" id="access-desktop" value="access-desktop"/>
 		</li>
-		<li class="tight-form-item">
-			<select class="tight-form-input input-large" ng-model="target.agenttype">
-				<option value="all-agents">all-agents</option>
-				<option value="user">user</option>
-				<option value="spider">spider</option>
-				<option value="bot">bot</option>
-			</select>
+		<li class="tight-form-item last">
+			Mobile-app:
+			<input ng-model="access.mobileapp" type="checkbox" name="access-mobile-app" id="access-mobile-app" value="access-mobile-app"/>
+		</li>
+		<li class="tight-form-item last">
+			Mobile-web:
+			<input ng-model="access.mobileweb" type="checkbox" name="access-mobile-web" id="access-mobile-web" value="access-mobile-web"/>
+		</li>
+		<li class="tight-form-item last">
+			Grouped:
+			<input ng-model="access.grouped" type="checkbox" name="access-grouped" id="access-grouped" value="access-grouped"/>
+		</li>
+	</ul>
+	
+	<div class="clearfix"></div>
+	
+	<ul class="tight-form-list" style="padding-left:65px" >
+		<li>Agent type:</li>
+		<li class="tight-form-item last">
+			User:
+			<input ng-model="agent.user" type="checkbox" name="agent-user" id="agent-user" value="agent-user"/>
+		</li>
+		<li class="tight-form-item last">
+			Spider:
+			<input ng-model="agent.mobileapp" type="checkbox" name="agent-spider" id="agent-spider" value="agent-spider"/>
+		</li>
+		<li class="tight-form-item last">
+			Bot:
+			<input ng-model="agent.mobileweb" type="checkbox" name="agent-bot" id="agent-bot" value="agent-bot"/>
+		</li>
+		<li class="tight-form-item last">
+			Grouped:
+			<input ng-model="agent.grouped" type="checkbox" name="agent-grouped" id="agent-grouped" value="agent-grouped"/>
 		</li>
 	</ul>
 
