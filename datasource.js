@@ -205,14 +205,17 @@ define( [
 										}
 									}
 								}
-								console.log('resolving finished');
+
+								var finalDataPoints = [];
+								for( var o in dataPoints ) {
+									finalDataPoints.push( dataPoints[ o ] );
+								}
+
+								finalDataPoints.sort( function(a,b){ return a[1] - b[1] } );
+
+								resolve( { datapoints: finalDataPoints, target: metricName } );
 							});
 
-							console.log('final datapoints');
-							console.log(dataPoints);
-
-							//FIXME: well duh, this is resolved before dataPoints is filled with data....
-							resolve( { datapoints: dataPoints, target: metricName } );
 						} ) );
 
 					}
