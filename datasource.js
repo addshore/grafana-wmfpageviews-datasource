@@ -149,12 +149,12 @@ define( [
 										metricName = metricName + '/' + agentTypes[ l ];
 									}
 
-									if( groupedRequests.indexOf( metricName ) == -1 ) {
+									if( !groupedRequests.hasOwnProperty( metricName ) ) {
 										groupedRequests[ metricName ] = [];
 									}
 
-									if( groupedRequests[ metricName ].indexOf( url ) == -1 ) {
-										groupedRequests[ metricName ][ url ] = request;
+									if( !groupedRequests[metricName].hasOwnProperty( url ) ) {
+										groupedRequests[ metricName ][url] = request;
 									}
 								}
 							}
@@ -189,19 +189,22 @@ define( [
 							var dataPoints = [];
 							//Wait for all request promises to complete and then do stuff
 							$q.all(requests).then(function(data){
-								var element = data[0];
-								if( element && element.data ) {
-									for( var i = 0; i < element.data.items.length; i++ ) {
-										var item = element.data.items[ i ];
 
-										var views = item.views;
-										var ms = item.timestamp.substring( 0, item.timestamp.length - 2 );
-										ms = new Date( ms.substr( 0, 4 ) + ' ' + ms.substr( 4, 2 ) + ' ' + ms.substr( 6, 2 ) ).getTime();
+								for( var j = 0; j < data.length; j++ ) {
+									var element = data[j];
+									if( element && element.data ) {
+										for( var i = 0; i < element.data.items.length; i++ ) {
+											var item = element.data.items[ i ];
 
-										if( ms in dataPoints ) {
-											dataPoints[ ms ][ 0 ] = dataPoints[ ms ][ 0 ] + views;
-										} else {
-											dataPoints[ ms ] = [ views, ms ];
+											var views = item.views;
+											var ms = item.timestamp.substring( 0, item.timestamp.length - 2 );
+											ms = new Date( ms.substr( 0, 4 ) + ' ' + ms.substr( 4, 2 ) + ' ' + ms.substr( 6, 2 ) ).getTime();
+
+											if( ms in dataPoints ) {
+												dataPoints[ ms ][ 0 ] = dataPoints[ ms ][ 0 ] + views;
+											} else {
+												dataPoints[ ms ] = [ views, ms ];
+											}
 										}
 									}
 								}
